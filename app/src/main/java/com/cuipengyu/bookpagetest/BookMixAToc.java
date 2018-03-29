@@ -18,10 +18,7 @@ package com.cuipengyu.bookpagetest;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * @author lfh.
- * @date 2016/8/7.
- */
+
 public class BookMixAToc extends Base {
 
     /**

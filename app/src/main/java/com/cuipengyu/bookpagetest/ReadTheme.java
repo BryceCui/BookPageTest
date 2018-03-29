@@ -15,9 +15,7 @@
  */
 package com.cuipengyu.bookpagetest;
 
-import java.io.Serializable;
+public class ReadTheme {
 
-public class Base implements Serializable {
-
-    public boolean ok;
+    public int theme;
 }

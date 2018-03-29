@@ -1,7 +1,7 @@
 package com.cuipengyu.bookpagetest;
 
 /**
- * Created by mingren on 2018/3/28.
+ * Created by cuipengyu on 2018/3/28.
  */
 
 public interface OnReadStateChangeListener {

@@ -10,7 +10,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 /**
- * Created by mingren on 2018/3/28.
+ * Created by cuipengyu on 2018/3/28.
  */
 
 public class FileUtils {
@@ -55,6 +55,8 @@ public class FileUtils {
     //创建文件
     private static String createFile(File file) {
         try {
+            //public File getParentFile()返回此抽象路径名的父路径名的抽象路径名，如果此路径名没有指定父目录，则返回 null。	public boolean exists()
+            // 测试此抽象路径名表示的文件或目录是否存在。
             if (file.getParentFile().exists()) {
                 Log.e("----- 创建文件", file.getAbsolutePath());
                 file.createNewFile();
@@ -71,10 +73,16 @@ public class FileUtils {
         return "";
     }
 
-    //创建文件夹
+    /**
+     * 创建文件夹
+     * public boolean mkdir()
+     * 创建此抽象路径名指定的目录
+     */
+
     private static String createDir(String dirPath) {
         try {
             File file = new File(dirPath);
+
             if (file.getParentFile().exists()) {
                 Log.e("----- 创建文件夹", file.getAbsolutePath());
                 file.mkdir();
