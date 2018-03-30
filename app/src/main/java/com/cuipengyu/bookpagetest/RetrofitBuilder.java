@@ -73,47 +73,47 @@ public class RetrofitBuilder implements HttpEngine {
         return retrofitBuilder;
 
     }
-
-    @Override
-    public <B extends BaseBean> void post(String url, final CallBack<B> callBack) {
-        RetrofitService server = retrofit.create(RetrofitService.class);
-
-        final Type[] types = callBack.getClass().getGenericInterfaces();
-        final Type finalNeedType = MethodHandler(types).get(0);
-
-        server.post(url, params) //请求完成后在io线程中执行 //请求在新的线程中执行
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.e("RetrofitBuilder", e.getMessage());
-                        callBack.onFailure();
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        try {
-                            String s = responseBody.string();
-                            B data = new Gson().fromJson(s, finalNeedType);
-                            if (data.isOk()) {
-                                callBack.onSuccess(data);
-                                Log.e("data", data.toString());
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                });
-
-    }
+//
+//    @Override
+//    public <B extends BaseBean> void post(String url, final CallBack<B> callBack) {
+//        RetrofitService server = retrofit.create(RetrofitService.class);
+//
+//        final Type[] types = callBack.getClass().getGenericInterfaces();
+//        final Type finalNeedType = MethodHandler(types).get(0);
+//
+//        server.post(url, params) //请求完成后在io线程中执行 //请求在新的线程中执行
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<ResponseBody>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.e("RetrofitBuilder", e.getMessage());
+//                        callBack.onFailure();
+//                    }
+//
+//                    @Override
+//                    public void onNext(ResponseBody responseBody) {
+//                        try {
+//                            String s = responseBody.string();
+//                            B data = new Gson().fromJson(s, finalNeedType);
+//                            if (data.isOk()) {
+//                                callBack.onSuccess(data);
+//                                Log.e("data", data.toString());
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+//
+//                    }
+//
+//                });
+//
+//    }
 
     @Override
     public <B> void post1(String url, final CallBack<B> callBack) {
@@ -129,28 +129,29 @@ public class RetrofitBuilder implements HttpEngine {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.e("----------", e.getMessage());
                     }
 
                     @Override
                     public void onNext(MixTocBean1 mixTocBean1) {
-                        if (mixTocBean1.getMixToc().isOk())
+                        if (mixTocBean1.isOk()){
+                            callBack.onSuccess((B) mixTocBean1);
+
+                        }else {
                             callBack.onFailure();
-                        callBack.onSuccess(mixTocBean1);
+
+                        }
 
                     }
                 });
     }
 
-
-    @Override
-    public void post(String url, final BaseCallBack callBack) {
+    public <B> void post2(String url, final CallBack<B> callBack) {
         RetrofitService server = retrofit.create(RetrofitService.class);
-        server.post(url, params) //请求完成后在io线程中执行 //请求在新的线程中执行
+        server.post2(url, params) //请求完成后在io线程中执行 //请求在新的线程中执行
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ResponseBody>() {
-
+                .subscribe(new Subscriber<ChapterBean1>() {
                     @Override
                     public void onCompleted() {
 
@@ -158,27 +159,58 @@ public class RetrofitBuilder implements HttpEngine {
 
                     @Override
                     public void onError(Throwable e) {
-//                        Log.e("RetrofitBuilder ---", e.getMessage() + "");
-
-                        callBack.onFailure();
+                        Log.e("----------", e.getMessage());
                     }
 
                     @Override
-                    public void onNext(ResponseBody responseBody) {
-
-                        try {
-                            callBack.onSuccess(responseBody.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            callBack.onError();
+                    public void onNext(ChapterBean1 mixTocBean1) {
+                        if (mixTocBean1.getChapter().getBody() == null){
+                            callBack.onFailure();
+                        }else {
+                            callBack.onSuccess((B) mixTocBean1);
                         }
 
                     }
-
-
                 });
-
     }
+
+
+//    @Override
+//    public void post(String url, final BaseCallBack callBack) {
+//        RetrofitService server = retrofit.create(RetrofitService.class);
+//        server.post(url, params) //请求完成后在io线程中执行 //请求在新的线程中执行
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Subscriber<ResponseBody>() {
+//
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+////                        Log.e("RetrofitBuilder ---", e.getMessage() + "");
+//
+//                        callBack.onFailure();
+//                    }
+//
+//                    @Override
+//                    public void onNext(ResponseBody responseBody) {
+//
+//                        try {
+//                            callBack.onSuccess(responseBody.string());
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                            callBack.onError();
+//                        }
+//
+//                    }
+//
+//
+//                });
+//
+//    }
 
 
     @Override
@@ -195,7 +227,7 @@ public class RetrofitBuilder implements HttpEngine {
     public interface RetrofitService {
 
         @GET()
-        Observable<ResponseBody> post(@Url String url,
+        Observable<ChapterBean1> post2(@Url String url,
                                       @QueryMap Map<String, String> map);
 
         @GET()

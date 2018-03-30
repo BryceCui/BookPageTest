@@ -72,7 +72,7 @@ public class PageWidget extends BeaseReadView {
     Paint mPaint;
 
     public PageWidget(Context context, String bookId,
-                      List<BookMixAToc.mixToc.Chapters> chaptersList,
+                      List<MixTocBean1.MixTocBean.ChaptersBean> chaptersList,
                       OnReadStateChangeListener listener) {
         super(context, bookId, chaptersList, listener);
         mPath0 = new Path();

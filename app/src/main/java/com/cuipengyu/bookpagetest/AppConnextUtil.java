@@ -15,6 +15,7 @@ public class AppConnextUtil extends Application {
     public void onCreate() {
         super.onCreate();
         AppConnextUtil.context = getApplicationContext();
+        SharedPreferencesUtil.init(this,getPackageName() + "_preference", Context.MODE_MULTI_PROCESS);
     }
 
     public static Context getAppConnect() {

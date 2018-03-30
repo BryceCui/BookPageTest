@@ -75,17 +75,17 @@ public class PageFactory {
     //字符编码
     private String charset = "UTF-8";
     //实体类
-    private List<BookMixAToc.mixToc.Chapters> chaptersList;
+    private List<MixTocBean1.MixTocBean.ChaptersBean> chaptersList;
     //监听
     private OnReadStateChangeListener listener;
     //内容的范围
     private Rect rectF;
 
-    PageFactory(Context context, String bookId, List<BookMixAToc.mixToc.Chapters> chapters) {
+    PageFactory(Context context, String bookId, List<MixTocBean1.MixTocBean.ChaptersBean> chapters) {
         this(context, AppScreenUtil.getAppWidth(), AppScreenUtil.getAppHeight(), 15, bookId, chapters);
     }
 
-    PageFactory(Context context, int Width, int Height, int FontSize, String bookId, List<BookMixAToc.mixToc.Chapters> chapters) {
+    PageFactory(Context context, int Width, int Height, int FontSize, String bookId, List<MixTocBean1.MixTocBean.ChaptersBean> chapters) {
         mContext = context;
         mWidth = Width;
         mHeight = Height;
@@ -183,7 +183,7 @@ public class PageFactory {
                 canvas.drawColor(Color.WHITE);
             }
             //绘制标题
-            canvas.drawText(chaptersList.get(currentChapter - 1).title, marginWidth, y, mTitlePaint);
+            canvas.drawText(chaptersList.get(currentChapter - 1).getTitle(), marginWidth, y, mTitlePaint);
             y += mLineSpace + mNumFontSize;
             // 绘制阅读页面文字
             for (String line : mLines) {
@@ -302,7 +302,7 @@ public class PageFactory {
             paraSpace += mLineSpace;
             mPageLineCount = (mVisibleHeight - paraSpace) / (mFontSize + mLineSpace);
         }
-        return mLines;
+        return lines;
     }
 
     /**

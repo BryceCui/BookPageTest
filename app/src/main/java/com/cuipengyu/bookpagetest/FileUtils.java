@@ -7,7 +7,10 @@ import android.util.Log;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 
 /**
  * Created by cuipengyu on 2018/3/28.
@@ -163,5 +166,35 @@ public class FileUtils {
             }
         }
         return charset;
+    }
+
+    /**
+     * 将内容写入文件
+     *
+     * @param filePath eg:/mnt/sdcard/demo.txt
+     * @param content  内容
+     * @param isAppend 是否追加
+     */
+    public static void writeFile(String filePath, String content, boolean isAppend) {
+//        LogUtils.i("save:" + filePath);
+        try {
+            FileOutputStream fout = new FileOutputStream(filePath, isAppend);
+            byte[] bytes = content.getBytes();
+            fout.write(bytes);
+            fout.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeFile(String filePathAndName, String fileContent) {
+        try {
+            OutputStream outstream = new FileOutputStream(filePathAndName);
+            OutputStreamWriter out = new OutputStreamWriter(outstream);
+            out.write(fileContent);
+            out.close();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
     }
 }

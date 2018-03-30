@@ -88,4 +88,7 @@ public class SettingManager {
         return SharedPreferencesUtil.getInstance().getInt("readTheme", 3);
     }
 
+    public boolean isVolumeFlipEnable() {
+        return SharedPreferencesUtil.getInstance().getBoolean("volumeFlip", true);
+    }
 }

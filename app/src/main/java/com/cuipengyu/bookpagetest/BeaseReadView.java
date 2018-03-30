@@ -38,7 +38,7 @@ public abstract class BeaseReadView extends View {
     //滑动装置
     Scroller mScroller;
 
-    public BeaseReadView(Context context, String bookId, List<BookMixAToc.mixToc.Chapters> chaptersList,
+    public BeaseReadView(Context context, String bookId, List<MixTocBean1.MixTocBean.ChaptersBean> chaptersList,
                          OnReadStateChangeListener listener) {
         super(context);
         this.listener = listener;
