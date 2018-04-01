@@ -20,7 +20,7 @@ package com.cuipengyu.bookpagetest;
 import java.io.File;
 
 /**
- * @author yuyh.
+ * @author 章节缓存
  * @date 2016/9/28.
  */
 public class CacheManager {
