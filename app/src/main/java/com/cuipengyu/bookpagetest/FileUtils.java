@@ -102,6 +102,7 @@ public class FileUtils {
     }
 
     //返回字符编码
+    //TODO 解决编码导致有些文字乱码
     public static String getCharset(String fileName) {
         BufferedInputStream bis = null;
         String charset = "GBK";
