@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     public void readCurrentChapter() {
         //查看本地是否有缓存章节文件
         if (CacheManager.getInstance().getChapterFile(bookId, currentChapter) != null) {
