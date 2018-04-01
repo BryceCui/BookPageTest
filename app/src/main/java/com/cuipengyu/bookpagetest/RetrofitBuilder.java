@@ -124,7 +124,6 @@ public class RetrofitBuilder implements HttpEngine {
                 .subscribe(new Subscriber<MixTocBean1>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override

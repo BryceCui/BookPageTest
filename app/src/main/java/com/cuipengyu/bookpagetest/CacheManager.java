@@ -62,7 +62,8 @@ public class CacheManager {
 
     public void saveChapterFile(String bookId, int chapter, ChapterBean1 data) {
         File file = FileUtils.getChapterFile(bookId, chapter);
-        FileUtils.writeFile(file.getAbsolutePath(), StringUtils.formatContent(data.getChapter().getBody()), false);
+        String body=data.getChapter().getBody();
+        FileUtils.writeFile(file.getAbsolutePath(), StringUtils.formatContent(body), false);
     }
 
     /**
