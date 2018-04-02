@@ -20,7 +20,7 @@ package com.cuipengyu.bookpagetest;
 import java.io.File;
 
 /**
- * @author yuyh.
+ * @author 章节缓存
  * @date 2016/9/28.
  */
 public class CacheManager {
@@ -62,7 +62,8 @@ public class CacheManager {
 
     public void saveChapterFile(String bookId, int chapter, ChapterBean1 data) {
         File file = FileUtils.getChapterFile(bookId, chapter);
-        FileUtils.writeFile(file.getAbsolutePath(), StringUtils.formatContent(data.getChapter().getBody()), false);
+        String body=data.getChapter().getBody();
+        FileUtils.writeFile(file.getAbsolutePath(), StringUtils.formatContent(body), false);
     }
 
     /**

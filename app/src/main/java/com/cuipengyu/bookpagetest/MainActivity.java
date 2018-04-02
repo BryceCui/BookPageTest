@@ -1,6 +1,5 @@
 package com.cuipengyu.bookpagetest;
 
-import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,13 +29,18 @@ public class MainActivity extends AppCompatActivity {
         mRlBookReadRoot = findViewById(R.id.mRlBookReadRoot);
         curTheme = SettingManager.getInstance().getReadTheme();
         ThemeManager.setReaderTheme(curTheme, mRlBookReadRoot);
+        getDta();
+
+    }
+
+    public void getDta() {
         RetrofitBuilder.build().post1("/mix-atoc/57206c3539a913ad65d35c7b", new HttpEngine.CallBack<MixTocBean1>() {
             @Override
             public void onSuccess(MixTocBean1 baseBean) {
-                Log.e("b", baseBean.getMixToc().getChaptersCount1() + "");
+                Log.e("bbbbbbbbbbbbb", baseBean.getMixToc().getChaptersCount1() + "");
                 setT(baseBean);
-                data = baseBean.getMixToc().getChapters().get(1).getLink();
-                bookId=baseBean.getMixToc().getBook();
+                data = mixTocBean.getMixToc().getChapters().get(currentChapter).getLink();
+                bookId = mixTocBean.getMixToc().getBook();
                 mPageWidget = new PageWidget(MainActivity.this, mixTocBean.getMixToc().getBook(), mixTocBean.getMixToc().getChapters(), new ReadListener());
                 flReadWidget.addView(mPageWidget);
                 mPageWidget.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.reader_menu_bg_color),
@@ -47,22 +51,28 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(String errMsg) {
-
+                Log.e("errMsg", errMsg);
             }
 
             @Override
             public void onFailure() {
+                Log.e("errMsg", "----");
 
             }
         });
 
     }
+
+
+
     public void readCurrentChapter() {
+        //查看本地是否有缓存章节文件
         if (CacheManager.getInstance().getChapterFile(bookId, currentChapter) != null) {
+            //存在
             showChapterRead(null, currentChapter);
         } else {
 //            mPresenter.getChapterRead(mChapterList.get(currentChapter - 1).link, currentChapter);
-            setdata(data);
+            setdata(data,currentChapter);
         }
     }
 
@@ -80,29 +90,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void setdata(String data) {
+    public void  setdata(String data, final int Chapter) {
         String s = data.replaceAll("/", "%2F");
         String s1 = s.replaceAll("\\?", "%3F");
         RetrofitBuilder.build().post2("http://chapter2.zhuishushenqi.com/chapter/" + s1, new HttpEngine.CallBack<ChapterBean1>() {
 
             @Override
             public void onSuccess(ChapterBean1 chapters) {
-                if (chapters.getChapter().getBody() != null) {
-                    CacheManager.getInstance().saveChapterFile(bookId, currentChapter, chapters);
-                }
-                if (!startRead) {
-                    startRead = true;
-                    if (!mPageWidget.isPrepared) {
-                        mPageWidget.init(curTheme);
-                    } else {
-                        mPageWidget.jumpToChapter(currentChapter);
-                    }
-                }
+                   showChapterRead(chapters,Chapter);
+//                if (chapters.getChapter().getBody() != null) {
+//                    CacheManager.getInstance().saveChapterFile(bookId, Chapter, chapters);
+//                }
+//                if (!startRead) {
+//                    startRead = true;
+//                    if (!mPageWidget.isPrepared) {
+//                        mPageWidget.init(curTheme);
+//                    } else {
+//                        mPageWidget.jumpToChapter(currentChapter);
+//                    }
+//                }
             }
 
             @Override
             public void onError(String errMsg) {
-              Log.e("RetrofitRequest---",errMsg.trim());
+                Log.e("RetrofitRequest---", errMsg.trim());
             }
 
             @Override
@@ -122,18 +133,29 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onChapterChanged(int chapter) {
-
+            Log.e("chapter", chapter + "");
+            currentChapter = chapter;
+//            mTocListAdapter.setCurrentChapter(currentChapter);
+            // 加载前一节 与 后三节
+            for (int i = chapter - 1; i <= chapter + 3 && i <= mixTocBean.getMixToc().getChapters().size(); i++) {
+                if (i > 0 && i != chapter
+                        && CacheManager.getInstance().getChapterFile(bookId, i) == null) {
+                    data = mixTocBean.getMixToc().getChapters().get(i-1).getLink();
+                    setdata(data,i-1);
+                }
+            }
         }
 
         @Override
         public void onPageChanged(int chapter, int page) {
+            Log.e("chapter2", chapter + "--" + page);
 
         }
 
         @Override
         public void onLoadChapterFailure(int chapter) {
-            startRead=false;
-            setdata(data);
+            startRead = false;
+            setdata(data,chapter);
         }
 
         @Override
