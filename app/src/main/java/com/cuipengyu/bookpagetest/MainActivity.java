@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
                 setT(baseBean);
                 data = mixTocBean.getMixToc().getChapters().get(currentChapter).getLink();
                 bookId = mixTocBean.getMixToc().getBook();
-                mPageWidget = new PageWidget(MainActivity.this, mixTocBean.getMixToc().getBook(), mixTocBean.getMixToc().getChapters(), new ReadListener());
+//                mPageWidget = new PageWidget(MainActivity.this, mixTocBean.getMixToc().getBook(), mixTocBean.getMixToc().getChapters(), new ReadListener());
+//                mPageWidget=new OverlappedWidget(MainActivity.this, mixTocBean.getMixToc().getBook(), mixTocBean.getMixToc().getChapters(), new ReadListener());
+                mPageWidget=new NoAimWidget(MainActivity.this, mixTocBean.getMixToc().getBook(), mixTocBean.getMixToc().getChapters(), new ReadListener());
                 flReadWidget.addView(mPageWidget);
                 mPageWidget.setTextColor(ContextCompat.getColor(MainActivity.this, R.color.reader_menu_bg_color),
                         ContextCompat.getColor(MainActivity.this, R.color.book_read_top_text));

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Scroller;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -111,7 +112,7 @@ public abstract class BeaseReadView extends View {
                     if (actiondownX < mScreenWidth / 2) {// 从左翻
                         BookStatus status = pagefactory.prePage();
                         if (status == BookStatus.NO_PRE_PAGE) {
-//                            ToastUtils.showSingleToast("没有上一页啦");
+                            Toast.makeText(getContext(), "没有上一页啦", Toast.LENGTH_SHORT).show();
                             return false;
                         } else if (status == BookStatus.LOAD_SUCCESS) {
                             abortAnimation();
@@ -122,7 +123,7 @@ public abstract class BeaseReadView extends View {
                     } else if (actiondownX >= mScreenWidth / 2) {// 从右翻
                         BookStatus status = pagefactory.nextPage();
                         if (status == BookStatus.NO_NEXT_PAGE) {
-//                            ToastUtils.showSingleToast("没有下一页啦");
+                            Toast.makeText(getContext(), "没有下一页啦", Toast.LENGTH_SHORT).show();
                             return false;
                         } else if (status == BookStatus.LOAD_SUCCESS) {
                             abortAnimation();
@@ -148,7 +149,6 @@ public abstract class BeaseReadView extends View {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-
                 long t = System.currentTimeMillis();
                 int ux = (int) e.getX();
                 int uy = (int) e.getY();
@@ -232,6 +232,7 @@ public abstract class BeaseReadView extends View {
     protected abstract void setBitmaps(Bitmap mCurPageBitmap, Bitmap mNextPageBitmap);
 
     public abstract void setTheme(int theme);
+
     /**
      * 复位触摸点位
      */
